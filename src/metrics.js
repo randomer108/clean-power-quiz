@@ -107,7 +107,7 @@ export const METRICS = [
     section: 'forecast',
     short: 'Future demand',
     title: 'Future electricity demand',
-    question: "How much electricity will Great Britain's system need each year to 2050?",
+    question: "How much electricity will Great Britain's system need each year, to 2050?",
     revealYear: 2024,
     domain: [0, 800],
     unit: 'TWh',
