@@ -1,0 +1,451 @@
+/* Monkeytype "serika dark" palette, with blue in place of its yellow highlight. */
+:root {
+  color-scheme: dark;
+  --bg: #323437;
+  --sub-alt: #2c2e31;
+  --sub: #646669;
+  --text: #d1d0c5;
+  --main: #3987e5;
+  --grid: #3b3d41;
+  --series-guess: var(--text);
+  --zone-fill: rgba(0, 0, 0, 0.08);
+}
+
+/* Each section gets its own accent by overriding --main. Tokens derived from --main are declared
+   here too, because a custom property resolves var() where it is declared, not where it is used. */
+:root,
+[data-section] {
+  --series-actual: var(--main);
+  --gap-fill: color-mix(in srgb, var(--main) 14%, transparent);
+}
+[data-section='general'] {
+  --main: #5aa83e;
+}
+[data-section='forecast'] {
+  --main: #4fd0e8;
+}
+
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 15px/1.6 'Roboto Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+}
+main {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 32px 16px 48px;
+}
+a {
+  color: var(--sub);
+  transition: color 0.15s;
+}
+a:hover {
+  color: var(--text);
+}
+
+/* Header */
+h1 {
+  font-size: clamp(1.5rem, 5vw, 2rem);
+  font-weight: 500;
+  line-height: 1.2;
+  margin: 0 0 12px;
+}
+.turbine {
+  display: inline-block;
+  width: 1.25em;
+  height: 1.25em;
+  margin-left: 0.1em;
+  vertical-align: -0.25em;
+}
+.turbine .outline,
+.turbine .blade,
+.turbine .hub {
+  stroke: var(--main);
+  stroke-width: 3.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.turbine .outline {
+  fill: none;
+}
+/* Blades and hub are filled with the page colour so they mask the tower behind them. */
+.turbine .blade,
+.turbine .hub {
+  fill: var(--bg);
+}
+.turbine .accent {
+  fill: color-mix(in srgb, var(--main) 25%, transparent);
+}
+.turbine .accent-band {
+  stroke: color-mix(in srgb, var(--main) 50%, transparent);
+  stroke-width: 3;
+}
+.rotor {
+  transform-box: view-box;
+  transform-origin: 32px 29px;
+  animation: spin 4s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rotor {
+    animation: none;
+  }
+}
+.lede {
+  color: var(--sub);
+  margin: 0 0 24px;
+}
+
+/* Score bar */
+#scorebar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  align-items: flex-end;
+  padding: 10px 0 12px;
+  margin-bottom: 8px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--sub-alt);
+}
+.slot-group {
+  display: flex;
+  gap: 14px;
+  padding-top: 6px;
+  border-top: 2px solid var(--main);
+}
+.slot {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: var(--sub);
+  line-height: 1.2;
+}
+.slot-label {
+  font-size: 0.7rem;
+}
+.slot-score {
+  font-size: 1.2rem;
+}
+.slot.done .slot-score {
+  color: var(--main);
+}
+.slot.total {
+  margin-left: auto;
+  text-align: right;
+}
+.slot.total .slot-score {
+  color: var(--text);
+  font-size: 1.6rem;
+}
+.slot .out-of {
+  font-size: 0.8rem;
+}
+
+/* Sections */
+.section {
+  margin-top: 32px;
+}
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin: 0 0 4px;
+  padding-left: 12px;
+  border-left: 3px solid var(--main);
+}
+.section-intro {
+  color: var(--sub);
+  font-size: 0.9rem;
+  margin: 0 0 16px;
+}
+
+/* Game cards */
+.game {
+  background: var(--sub-alt);
+  border-radius: 8px;
+  border-top: 3px solid var(--main);
+  padding: 20px 16px 16px;
+  margin-bottom: 20px;
+  /* Clears the sticky score bar when jumping to a chart from it. */
+  scroll-margin-top: 140px;
+}
+.game h2 {
+  font-size: 1.05rem;
+  font-weight: 500;
+  margin: 0 0 4px;
+}
+.question {
+  color: var(--sub);
+  font-size: 0.9rem;
+  margin: 0 0 12px;
+}
+
+/* Chart */
+.chart-wrap {
+  position: relative;
+}
+.chart-wrap svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  font-size: 11px;
+  user-select: none;
+}
+/* d3-axis sets font-family and font-size attributes on its groups; this restores the page font. */
+.grid,
+.axis {
+  font: inherit;
+}
+.grid line {
+  stroke: var(--grid);
+  stroke-width: 1;
+}
+.grid text,
+.axis text {
+  fill: var(--sub);
+}
+.axis .domain,
+.axis line {
+  stroke: var(--sub);
+}
+.draw-zone rect {
+  fill: var(--zone-fill);
+}
+.draw-zone text {
+  fill: var(--sub);
+  font-size: 13px;
+}
+.target {
+  stroke: var(--sub);
+  stroke-width: 1;
+  stroke-dasharray: 4 4;
+}
+.target-label {
+  fill: var(--sub);
+}
+.line {
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.line.actual {
+  stroke: var(--series-actual);
+}
+.line.guess {
+  stroke: var(--series-guess);
+  stroke-dasharray: 6 4;
+}
+.dot.actual {
+  fill: var(--series-actual);
+  stroke: var(--sub-alt);
+  stroke-width: 2;
+}
+.dot.guess {
+  fill: var(--series-guess);
+}
+.gap {
+  fill: var(--gap-fill);
+}
+.value-label {
+  fill: var(--text);
+  font-weight: 500;
+}
+.value-label.muted {
+  fill: var(--sub);
+  font-weight: 400;
+}
+.crosshair {
+  stroke: var(--sub);
+  stroke-width: 1;
+}
+.overlay {
+  fill: transparent;
+  cursor: crosshair;
+  touch-action: none;
+}
+.overlay.revealed {
+  cursor: default;
+  touch-action: pan-y;
+}
+
+.tooltip {
+  position: absolute;
+  top: 8px;
+  transform: translateX(10px);
+  background: var(--bg);
+  color: var(--text);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 12px;
+  pointer-events: none;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+.tooltip.flip {
+  transform: translateX(calc(-100% - 10px));
+}
+.tt-year {
+  color: var(--sub);
+}
+
+/* Controls */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+.legend {
+  color: var(--sub);
+  font-size: 0.8rem;
+}
+.key {
+  display: inline-block;
+  width: 16px;
+  height: 0;
+  border-top: 3px solid;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+.legend .key-guess {
+  margin-left: 14px;
+}
+.key-actual {
+  border-color: var(--series-actual);
+}
+.key-guess {
+  border-color: var(--series-guess);
+  border-top-style: dashed;
+}
+button {
+  font: inherit;
+  font-size: 0.9rem;
+  padding: 8px 18px;
+  border-radius: 8px;
+  border: 0;
+  background: var(--bg);
+  color: var(--text);
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+button:hover:not(:disabled) {
+  background: var(--text);
+  color: var(--bg);
+}
+button:focus-visible {
+  outline: 2px solid var(--main);
+  outline-offset: 2px;
+}
+button:disabled {
+  color: var(--sub);
+  cursor: not-allowed;
+}
+
+/* Per-chart result */
+.result {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 20px;
+  align-items: baseline;
+  margin-top: 16px;
+  color: var(--sub);
+  font-size: 0.9rem;
+}
+.result p {
+  margin: 0;
+}
+.result b {
+  color: var(--text);
+  font-weight: 500;
+}
+.result details {
+  grid-column: 1 / -1;
+}
+.score,
+.total-score {
+  color: var(--main);
+  line-height: 1;
+}
+.score {
+  font-size: 2.4rem;
+}
+.out-of {
+  font-size: 1rem;
+  color: var(--sub);
+}
+details {
+  font-size: 0.8rem;
+}
+summary {
+  cursor: pointer;
+}
+summary:hover {
+  color: var(--text);
+}
+table {
+  border-collapse: collapse;
+  margin-top: 8px;
+}
+th {
+  font-weight: 400;
+}
+th,
+td {
+  text-align: right;
+  padding: 2px 16px 2px 0;
+}
+td {
+  color: var(--text);
+}
+
+/* Final score */
+#total {
+  text-align: center;
+  padding: 24px 0 32px;
+  color: var(--sub);
+}
+#total p {
+  margin: 0;
+}
+#total .total-score {
+  font-size: 4rem;
+  margin: 4px 0;
+}
+
+footer {
+  color: var(--sub);
+  font-size: 0.75rem;
+  border-top: 1px solid var(--sub-alt);
+  padding-top: 12px;
+}
+footer p {
+  margin: 0 0 8px;
+}
+
+@media (max-width: 560px) {
+  .slot-group {
+    gap: 10px;
+  }
+  .slot-label {
+    font-size: 0.6rem;
+  }
+  .slot.total {
+    margin-left: 0;
+    text-align: left;
+  }
+}

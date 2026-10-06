@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clean Power Guess</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./src/style.css" />
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>
+          How clean is Britain's power?
+          <svg class="turbine" viewBox="0 0 64 64" aria-hidden="true">
+            <circle class="accent" cx="32" cy="29" r="7" />
+            <line class="accent-band" x1="28.4" y1="49" x2="35.6" y2="49" />
+            <path class="outline" d="M29.4 33 L27.4 55 M34.6 33 L36.6 55 M8.5 55 H55.5" />
+            <g class="rotor">
+              <path class="blade" d="M29 26 V8.5 C33 8.5 35.5 11.5 35.5 14.5 V26" />
+              <path class="blade" d="M29 26 V8.5 C33 8.5 35.5 11.5 35.5 14.5 V26" transform="rotate(120 32 29)" />
+              <path class="blade" d="M29 26 V8.5 C33 8.5 35.5 11.5 35.5 14.5 V26" transform="rotate(240 32 29)" />
+              <circle class="hub" cx="32" cy="29" r="3.4" />
+            </g>
+          </svg>
+        </h1>
+        <p class="lede">
+          The government wants clean power by 2030. How far has Britain got? Each chart shows the start of a line:
+          draw the rest, then see how close you were.
+        </p>
+      </header>
+      <nav id="scorebar" aria-label="Scores"></nav>
+      <div id="sections"></div>
+      <section id="total" hidden></section>
+      <footer>
+        <p>
+          Sources: DESNZ,
+          <a href="https://www.gov.uk/government/statistics/clean-power-2030-metrics">Clean Power 2030 metrics</a>;
+          <a href="https://www.gov.uk/government/statistics/energy-trends-section-6-renewables">Energy Trends: UK renewables</a>;
+          <a href="https://www.gov.uk/government/statistical-data-sets/annual-domestic-energy-price-statistics">Annual domestic energy bills</a>;
+          <a href="https://www.gov.uk/government/statistics/final-uk-greenhouse-gas-emissions-statistics-1990-to-2024">Final UK greenhouse gas emissions statistics</a>;
+          <a href="https://www.gov.uk/government/statistics/electricity-chapter-5-digest-of-united-kingdom-energy-statistics-dukes">DUKES chapter 5: electricity</a>.
+        </p>
+        <p>
+          Clean power means nuclear and renewables, excluding energy from waste and combined heat and power.
+          Power station emissions cover the whole electricity supply sector. Electricity demand is electricity
+          available in the UK: supplied plus net imports, including grid losses. Bills assume 3,400 kWh of electricity
+          and 11,200 kWh of gas a year, and are in cash terms, not adjusted for inflation.
+        </p>
+        <p>
+          Forecasts come from NESO,
+          <a href="https://www.neso.energy/publications/future-energy-scenarios-fes">Future Energy Scenarios 2025</a>,
+          the Holistic Transition pathway. Future demand is GB system demand by financial year. Future power emissions
+          are from electricity generation and don't net off negative emissions from bioenergy with carbon capture.
+        </p>
+      </footer>
+    </main>
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>
